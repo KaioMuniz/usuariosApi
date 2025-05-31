@@ -9,31 +9,6 @@ O sistema está organizado em camadas lógicas que separam responsabilidades cla
 ---
 
 ## Estrutura e Camadas do Projeto
-src/main/java/br/com/cotiinformatica
-│
-├── usuario                # Módulo relacionado à gestão de usuários
-│   ├── controller         # Controladores REST para requisições HTTP
-│   ├── service            # Regras de negócio e serviços
-│   ├── repository         # Acesso a dados (DAO)
-│   ├── dto                # Data Transfer Objects para entrada e saída
-│   ├── entity             # Entidades JPA que mapeiam o banco de dados
-│   └── events             # Eventos relacionados ao módulo usuário
-│
-├── security               # Configurações e componentes de segurança
-│   ├── config             # Configurações específicas de segurança
-│   ├── jwt                # Classes relacionadas a JWT (tokens)
-│   ├── filters            # Filtros de autenticação e autorização
-│   └── utils              # Utilitários de segurança
-│
-├── config                 # Configurações gerais do sistema
-│   ├── SwaggerConfig.java     # Configuração da documentação Swagger
-│   ├── RabbitMQConfig.java    # Configuração do RabbitMQ
-│   └── ModelMapperConfig.java # Configuração do ModelMapper
-│
-├── exception              # Tratamento global de exceções
-│   └── GlobalExceptionHandler.java
-│
-├── ProjetoApiUsuariosApplication.java  # Classe principal do Spring Boot
 
 ### 1. Camada de Apresentação (Controller)
 
