@@ -2,7 +2,6 @@ package br.com.cotiinformatica.components;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +14,11 @@ public class RabbitMQWorkerComponent {
 
 	@Autowired SmtpMailComponent smtpMailComponent;
 	@Autowired ObjectMapper objectMapper;
-	
-	@Value("${rabbitmq.queue_name}")
-	private String queueName;
-	
+		
 	/*
 	 * Método para ler e processar a fila
 	 */
-	@RabbitListener(queues = "#{rabbitMQWorkerComponent.queueName}")
+	@RabbitListener(queues = "boas-vindas")
 	public void consume(@Payload String message) throws Exception {
 		
 		//ler e deserializar o conteudo da mensagem gravada na fila

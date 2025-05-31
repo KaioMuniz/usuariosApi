@@ -105,8 +105,8 @@ Isola toda a lógica relacionada à autenticação e autorização, incluindo:
 ## Contato
 
 Para dúvidas ou sugestões, entre em contato:  
-kkaioribeiro@gmail.com
-https://www.linkedin.com/in/kaiomuniz/
+- **kkaioribeiro@gmail.com
+- **https://www.linkedin.com/in/kaiomuniz/
 
 ---
 
