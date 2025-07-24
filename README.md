@@ -1,4 +1,6 @@
 # Projeto API Usuários
+<img width="1545" height="422" alt="image" src="https://github.com/user-attachments/assets/4801cbea-606b-442c-a39f-0224dafb39e6" />
+
 
 ## Visão Geral da Arquitetura
 
