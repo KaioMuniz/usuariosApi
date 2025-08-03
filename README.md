@@ -1,8 +1,48 @@
 # Projeto API Usuários
-<img width="1545" height="422" alt="image" src="https://github.com/user-attachments/assets/4801cbea-606b-442c-a39f-0224dafb39e6" />
-
 
 ## Visão Geral da Arquitetura
+
+```
+
+src/
+└── main/
+    └── java/
+        └── br/
+            └── com/
+                └── cotiinformatica/
+                    ├── components/              # Componentes auxiliares (JWT, Criptografia, Email, RabbitMQ)
+                    │   ├── JwtBearerComponent.java
+                    │   ├── RabbitMQPublisherComponent.java
+                    │   ├── RabbitMQWorkerComponent.java
+                    │   ├── SHA256Component.java
+                    │   └── SmtpMailComponent.java
+                    ├── configurations/          # Configurações gerais da aplicação (Swagger, ModelMapper, RabbitMQ)
+                    │   ├── ModelMapperConfiguration.java
+                    │   ├── RabbitMQConfiguration.java
+                    │   └── SwaggerConfiguration.java
+                    ├── controllers/             # Controladores REST que recebem e processam requisições HTTP
+                    │   └── UsuariosController.java
+                    ├── dtos/                    # Data Transfer Objects para comunicação entre camadas
+                    │   ├── AutenticarUsuarioRequest.java
+                    │   ├── AutenticarUsuarioResponse.java
+                    │   ├── CriarUsuarioRequest.java
+                    │   └── CriarUsuarioResponse.java
+                    ├── entities/                # Entidades JPA que representam tabelas do banco de dados
+                    │   └── Usuario.java
+                    ├── events/                  # Eventos de domínio para ações como criação de usuário
+                    │   └── UsuarioCriadoEvent.java
+                    ├── handlers/                # Tratadores de exceções
+                    │   ├── IllegalArgumentExceptionHandler.java
+                    │   └── ValidationHandler.java
+                    ├── repositories/            # Interfaces JPA para acesso e manipulação dos dados no banco
+                    │   └── UsuarioRepository.java
+                    ├── services/                # Serviços com lógica de negócio da aplicação
+                    │   └── UsuarioService.java
+                    └── ProjetoApiUsuariosApplication.java  # Classe principal para inicialização do Spring Boot
+
+```
+<img width="1545" height="422" alt="image" src="https://github.com/user-attachments/assets/4801cbea-606b-442c-a39f-0224dafb39e6" />
+
 
 Este projeto é uma API RESTful construída em Java utilizando o framework Spring Boot. A arquitetura segue os princípios do padrão **Clean Architecture** e **Domain-Driven Design (DDD)** para garantir alta coesão, baixo acoplamento e escalabilidade.
 
@@ -10,55 +50,74 @@ O sistema está organizado em camadas lógicas que separam responsabilidades cla
 
 ---
 
-## Estrutura e Camadas do Projeto
+# Estrutura e Camadas do Projeto
 
-### 1. Camada de Apresentação (Controller)
+## 1. Camada de Apresentação (Controller)
 
-Responsável por expor os endpoints REST e receber as requisições HTTP.  
-Exemplo: `usuario.controller.UsuariosController`  
+Responsável por expor os endpoints REST da aplicação e atuar como porta de entrada das requisições HTTP.  
+**Exemplo:** `usuario.controller.UsuariosController`
 
-- Validação básica dos dados de entrada
-- Invoca serviços da camada de negócio
-- Retorna respostas formatadas com DTOs
+- Recebe e valida os dados enviados pelos clientes  
+- Encaminha as chamadas para os serviços da camada de negócio  
+- Retorna respostas adequadas com uso de DTOs (Request/Response)  
+- Facilita a documentação via Swagger  
 
-### 2. Camada de Aplicação (Service)
+---
 
-Contém as regras de negócio e casos de uso.  
-Exemplo: `usuario.service.UsuarioService`  
+## 2. Camada de Aplicação (Service)
 
-- Orquestra ações de persistência, validação complexa e comunicação com outros componentes
-- Envia eventos para filas RabbitMQ para processos assíncronos
-- Utiliza DTOs para entrada e saída, mapeados via ModelMapper
+Contém a lógica de negócio e os casos de uso da aplicação.  
+**Exemplo:** `usuario.service.UsuarioService`
 
-### 3. Camada de Persistência (Repository)
+- Orquestra a execução de regras, integrações e persistência  
+- Publica eventos em filas RabbitMQ para processamento assíncrono  
+- Realiza transformações entre entidades e DTOs usando ModelMapper  
+- Atua como intermediário entre o controller e a camada de dados  
 
-Interface com o banco de dados, utilizando Spring Data JPA.  
-Exemplo: `usuario.repository.UsuarioRepository`  
+---
 
-- Abstrai operações CRUD e consultas específicas
-- Trabalha com entidades JPA que representam tabelas do banco
+## 3. Camada de Persistência (Repository)
 
-### 4. Camada de Domínio (Entity / Model)
+Responsável por acessar e manipular os dados no banco utilizando Spring Data JPA.  
+**Exemplo:** `usuario.repository.UsuarioRepository`
 
-Representa as entidades do sistema e suas propriedades.  
-Exemplo: `usuario.entity.Usuario`  
+- Encapsula as operações de CRUD e consultas customizadas  
+- Trabalha diretamente com entidades JPA que refletem o modelo do banco de dados  
+- Reduz o código boilerplate com repositórios baseados em interfaces  
 
-- Define atributos e relacionamentos do domínio
-- Validações e regras específicas podem ser aplicadas aqui
+---
 
-### 5. Camada de Segurança
+## 4. Camada de Domínio (Entities e Models)
 
-Isola toda a lógica relacionada à autenticação e autorização, incluindo:
+Define as estruturas centrais da aplicação que representam as regras e conceitos do negócio.  
+**Exemplo:** `usuario.entity.Usuario`
 
-- Geração e validação de tokens JWT (`security.jwt`)
-- Filtros e interceptadores de requisição (`security.filters`)
-- Configurações de segurança do Spring Security (`security.config`)
+- Representa as entidades persistidas no banco  
+- Contém atributos, relacionamentos e anotações JPA  
+- Pode conter validações e regras específicas do domínio  
 
-### 6. Comunicação Assíncrona com RabbitMQ
+---
 
-- Eventos são publicados na fila RabbitMQ (`components.RabbitMQPublisherComponent`)
-- Facilita integração desacoplada e processamento em background
-- Permite escalabilidade horizontal do sistema
+## 5. Camada de Segurança
+
+Centraliza toda a lógica relacionada à autenticação e autorização.  
+**Pacotes envolvidos:** `security.jwt`, `security.filters`, `security.config`
+
+- Geração e validação de tokens JWT  
+- Filtros que interceptam requisições para validação de autenticação  
+- Definição de rotas públicas e protegidas via Spring Security  
+- Suporte a autenticação baseada em roles/perfis de usuário  
+
+---
+
+## 6. Comunicação Assíncrona (RabbitMQ)
+
+Implementa integração assíncrona com RabbitMQ para melhorar o desempenho e desacoplamento.  
+**Exemplo:** `components.RabbitMQPublisherComponent`
+
+- Permite envio de mensagens/eventos para filas  
+- Garante que processos custosos possam ser executados em segundo plano  
+- Facilita escalabilidade e resiliência do sistema  
 
 ---
 
