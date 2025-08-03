@@ -1,4 +1,8 @@
 # Projeto API Usuários
+Este projeto é uma API RESTful construída em Java utilizando o framework Spring Boot. A arquitetura segue os princípios do padrão **Clean Architecture** e **Domain-Driven Design (DDD)** para garantir alta coesão, baixo acoplamento e escalabilidade.
+
+O sistema está organizado em camadas lógicas que separam responsabilidades claras, facilitando manutenção e testes. Além disso, utiliza comunicação assíncrona via RabbitMQ para desacoplar processos e aumentar a robustez.
+
 
 ## Visão Geral da Arquitetura
 
@@ -42,11 +46,6 @@ src/
 
 ```
 <img width="1545" height="422" alt="image" src="https://github.com/user-attachments/assets/4801cbea-606b-442c-a39f-0224dafb39e6" />
-
-
-Este projeto é uma API RESTful construída em Java utilizando o framework Spring Boot. A arquitetura segue os princípios do padrão **Clean Architecture** e **Domain-Driven Design (DDD)** para garantir alta coesão, baixo acoplamento e escalabilidade.
-
-O sistema está organizado em camadas lógicas que separam responsabilidades claras, facilitando manutenção e testes. Além disso, utiliza comunicação assíncrona via RabbitMQ para desacoplar processos e aumentar a robustez.
 
 ---
 
